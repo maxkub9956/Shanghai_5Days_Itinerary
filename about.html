@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shanghai 5-Day Itinerary</title>
+  <style>
+    :root{--accent:#1976d2;--muted:#6b7280;--bg:#f8fafc}
+    *{box-sizing:border-box}
+    body{font-family:Inter, -apple-system, Roboto, "Helvetica Neue", Arial; margin:0; padding:16px; background:var(--bg); color:#0f172a}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:18px;margin:0}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    button{background:var(--accent);color:white;border:none;padding:8px 10px;border-radius:8px;font-size:14px}
+    button.ghost{background:white;color:var(--accent);border:1px solid rgba(25,118,210,.12)}
+    main{margin-top:12px}
+
+    .table-wrap{overflow:auto;background:white;border-radius:10px;box-shadow:0 1px 4px rgba(2,6,23,.06);padding:12px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{position:sticky;top:0;background:linear-gradient(90deg,var(--accent),#1565c0);color:white;padding:10px;text-align:left}
+    tbody td{padding:10px;border-bottom:1px solid #eef2f7;vertical-align:top}
+    a.gm{color:var(--accent);text-decoration:none}
+
+    /* card view */
+    .cards{display:none;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .card{background:white;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(2,6,23,.06)}
+    .card h3{margin:0 0 6px 0;font-size:15px}
+    .muted{color:var(--muted);font-size:13px}
+
+    @media(min-width:720px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+    }
+
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🏙 Shanghai 5-Day Itinerary</h1>
+      <div class="small">29 Oct – 2 Nov • Mobile-friendly</div>
+    </div>
+    <div class="controls">
+      <button id="btnToggle" class="ghost">แสดงแบบการ์ด (มือถือ)</button>
+      <button id="btnPrint">พิมพ์ / Print</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="table-wrap" id="tableWrap">
+      <table id="itineraryTable" aria-label="Shanghai itinerary">
+        <thead>
+          <tr>
+            <th style="min-width:110px">Day</th>
+            <th style="min-width:160px">Theme / Highlight</th>
+            <th style="min-width:320px">Itinerary (TH + EN)</th>
+            <th style="min-width:160px">Transport (MRT / Metro Line)</th>
+            <th style="min-width:160px">Cafe / Food</th>
+            <th style="min-width:160px">Google Maps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Day 1 (29 Oct)</td>
+            <td>Arrive Shanghai • Nanjing Road • The Bund • Jade Buddha Temple</td>
+            <td>🕕 เช้า: ถึงสนามบิน PVG 06:55 → Maglev/Metro ไปโรงแรม Jinjiang Inn<br>🕛 เที่ยง: เดินเล่นถนนนานจิง Nanjing Rd → ถ่ายรูปกระทิง The Bund<br>🕒 บ่าย: แวะ Jade Buddha Temple (玉佛寺) – Metro Line 7 → Changshou Rd<br>🕖 เย็น: เดินเล่น The Bund ถ่ายรูปหอไข่มุก 🌃</td>
+            <td>Line 2 (PVG–People’s Square) → Line 7 (Changshou Rd)</td>
+            <td>Jade Buddha Temple area – Vegetarian food, The Bund Cafe</td>
+            <td><a class="gm" href="https://goo.gl/maps/z1WcNanjingRd" target="_blank" rel="noopener">Map</a></td>
+          </tr>
+
+          <tr>
+            <td>Day 2 (30 Oct)</td>
+            <td>Shanghai Disneyland Day 🎢✨</td>
+            <td>🕕 เช้า: เดินทางไป Shanghai Disneyland (迪士尼) – Metro Line 11 → Disney Resort Station<br>🎡 ทั้งวัน: สนุกกับโซน Toy Story, Marvel, Adventure Isle<br>🕗 เย็น: ดูโชว์พลุ Disney Fireworks ก่อนกลับโรงแรม</td>
+            <td>Line 11 (Disney Resort)</td>
+            <td>Mickey Waffle, Turkey Leg, Disney Bubble Tea</td>
+            <td><a class="gm" href="https://goo.gl/maps/DisneyResortSH" target="_blank" rel="noopener">Map</a></td>
+          </tr>
+
+          <tr>
+            <td>Day 3 (31 Oct)</td>
+            <td>Wukang Road • French Concession • Cute Cafes ☕</td>
+            <td>🕕 เช้า: ถ่ายรูปบน Wukang Road (武康路) – บรรยากาศสไตล์ยุโรป<br>☕ บ่าย: แวะคาเฟ่ Bearology / RAC Coffee / Seesaw Coffee<br>🕖 เย็น: เดินเล่น Huaihai Rd / Tianzifang</td>
+            <td>Line 10 (Shanghai Library / Xintiandi)</td>
+            <td>Bearology Cafe, RAC Coffee, Seesaw Coffee</td>
+            <td><a class="gm" href="https://goo.gl/maps/WukangRd" target="_blank" rel="noopener">Map</a></td>
+          </tr>
+
+          <tr>
+            <td>Day 4 (1 Nov)</td>
+            <td>Old Shanghai • Yu Garden • Chenghuangmiao Market • The Bund Night View 🌆</td>
+            <td>🕕 เช้า: Yu Garden (豫园) • Chenghuangmiao ตลาดโบราณ<br>🕛 เที่ยง: กินเสี่ยวหลงเปา Xiaolongbao ที่ Nanxiang<br>🕒 บ่าย: เดินเล่น People’s Square, ถนนนานจิงฝั่งตะวันตก<br>🕖 เย็น: กลับ The Bund ดูวิวกลางคืน 🌆</td>
+            <td>Line 10 (Yu Garden) → Line 2 (People’s Square)</td>
+            <td>Nanxiang Xiaolongbao, Chenghuangmiao Snack Street</td>
+            <td><a class="gm" href="https://goo.gl/maps/YuGarden" target="_blank" rel="noopener">Map</a></td>
+          </tr>
+
+          <tr>
+            <td>Day 5 (2 Nov)</td>
+            <td>Free day • Shopping • Return flight 21:00 ✈️</td>
+            <td>🕕 เช้า: เก็บของ Check-out<br>🕛 เที่ยง: ช้อปที่ Global Harbor หรือ Nanjing Rd<br>🕗 17:00 เดินทางไปสนามบิน PVG ✈️ (ไฟลต์ 21:00 กลับกรุงเทพฯ)</td>
+            <td>Line 2 (People’s Square–PVG)</td>
+            <td>Starbucks Reserve, Din Tai Fung</td>
+            <td><a class="gm" href="https://goo.gl/maps/GlobalHarbor" target="_blank" rel="noopener">Map</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Card view for mobile -->
+    <div class="cards" id="cards">
+      <div class="card">
+        <h3>Day 1 (29 Oct)</h3>
+        <div class="muted">Arrive Shanghai • Nanjing Road • The Bund • Jade Buddha Temple</div>
+        <p>🕕 เช้า: ถึงสนามบิน PVG 06:55 → Maglev/Metro ไปโรงแรม Jinjiang Inn<br>🕛 เที่ยง: Nanjing Rd → The Bund<br>🕒 บ่าย: Jade Buddha Temple (Line 7) · 🕖 เย็น: The Bund</p>
+        <p class="muted">Transport: Line 2 → Line 7 · Cafe/Food: Jade Buddha area</p>
+        <p><a class="gm" href="https://goo.gl/maps/z1WcNanjingRd" target="_blank" rel="noopener">Google Maps</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Day 2 (30 Oct)</h3>
+        <div class="muted">Shanghai Disneyland Day 🎢✨</div>
+        <p>🕕 เดินทางไป Disney Resort (Line 11) · ทั้งวันเล่นสวนสนุก · 🕗 เย็นดูพลุ</p>
+        <p class="muted">Food: Mickey Waffle, Turkey Leg</p>
+        <p><a class="gm" href="https://goo.gl/maps/DisneyResortSH" target="_blank" rel="noopener">Google Maps</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Day 3 (31 Oct)</h3>
+        <div class="muted">Wukang Road • French Concession • Cute Cafes ☕</div>
+        <p>🕕 Wukang Road → คาเฟ่ Bearology / RAC / Seesaw · 🕖 Huaihai Rd</p>
+        <p class="muted">Transport: Line 10</p>
+        <p><a class="gm" href="https://goo.gl/maps/WukangRd" target="_blank" rel="noopener">Google Maps</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Day 4 (1 Nov)</h3>
+        <div class="muted">Old Shanghai • Yu Garden • Chenghuangmiao • Night View</div>
+        <p>🕕 Yu Garden · 🕛 Nanxiang Xiaolongbao · 🕖 The Bund Night View</p>
+        <p class="muted">Transport: Line 10 → Line 2</p>
+        <p><a class="gm" href="https://goo.gl/maps/YuGarden" target="_blank" rel="noopener">Google Maps</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Day 5 (2 Nov)</h3>
+        <div class="muted">Free day • Shopping • Return flight 21:00</div>
+        <p>🕕 Check-out · 🕛 ช้อป Global Harbor / Nanjing Rd · 🕗 เดินทางไป PVG 17:00</p>
+        <p class="muted">Transport: Line 2 · Food: Din Tai Fung</p>
+        <p><a class="gm" href="https://goo.gl/maps/GlobalHarbor" target="_blank" rel="noopener">Google Maps</a></p>
+      </div>
+    </div>
+
+    <p class="small">หมายเหตุ: กดปุ่ม &quot;แสดงแบบการ์ด&quot; เพื่อดูเวอร์ชันมือถือ. ลิงก์ Google Maps เป็นลิงก์ย่อที่ผู้ใช้สามารถเปิดบนมือถือได้.</p>
+  </main>
+
+  <script>
+    const btn = document.getElementById('btnToggle');
+    const tableWrap = document.getElementById('tableWrap');
+    const cards = document.getElementById('cards');
+    let isCard = false;
+    btn.addEventListener('click', ()=>{
+      isCard = !isCard;
+      if(isCard){
+        tableWrap.style.display = 'none';
+        cards.style.display = 'grid';
+        btn.textContent = 'แสดงแบบตาราง (Desktop)';
+      }else{
+        tableWrap.style.display = '';
+        cards.style.display = 'none';
+        btn.textContent = 'แสดงแบบการ์ด (มือถือ)';
+      }
+    });
+
+    document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
+  </script>
+</body>
+</html>
