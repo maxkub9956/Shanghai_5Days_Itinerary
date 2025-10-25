@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shanghai 5-Day Itinerary</title>
+  <style>
+    :root{--accent:#2883c6;--muted:#6b7280}
+    body{font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,"Helvetica Neue",Arial; margin:0; padding:16px; background:#f7fafc; color:#0f172a}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    h1{font-size:18px;margin:0}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    button{background:var(--accent);color:white;border:none;padding:8px 10px;border-radius:8px;font-size:14px}
+    button.ghost{background:white;color:var(--accent);border:1px solid rgba(40,131,198,.15)}
+    main{margin-top:12px}
+
+    /* Table */
+    .table-wrap{overflow:auto;background:white;border-radius:10px;box-shadow:0 1px 2px rgba(2,6,23,.06);padding:12px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{position:sticky;top:0;background:linear-gradient(90deg,var(--accent),#1f6fa8);color:white;padding:10px;text-align:left}
+    tbody td{padding:10px;border-bottom:1px solid #eef2f7;vertical-align:top}
+
+    /* Card view for mobile */
+    .cards{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .card{background:white;padding:12px;border-radius:10px;box-shadow:0 1px 2px rgba(2,6,23,.06)}
+    .card h3{margin:0 0 6px 0;font-size:15px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Responsive */
+    @media(min-width:720px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      thead th{font-size:14px}
+    }
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+  </style>
+
+  <!-- SheetJS (XLSX) for Excel export -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <!-- jsPDF + autoTable for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🏙 Shanghai 5-Day Itinerary <small style="font-weight:400; color:var(--muted); display:block; font-size:12px">29 Oct – 2 Nov</small></h1>
+
+    <div class="controls">
+      <button id="btnToggleView" class="ghost">แสดงเป็นการ์ด (มือถือ)</button>
+      <button id="btnDownloadXLS">ดาวน์โหลด Excel</button>
+      <button id="btnDownloadPDF">ดาวน์โหลด PDF</button>
+      <button id="btnDownloadCSV" class="ghost">ดาวน์โหลด CSV</button>
+      <button id="btnPrint" class="ghost">พิมพ์ / Print</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="table-wrap" id="tableWrap">
+      <table id="itineraryTable" aria-label="Shanghai itinerary">
+        <thead>
+          <tr>
+            <th style="min-width:90px">Day</th>
+            <th style="min-width:220px">Main Activities (TH/EN)</th>
+            <th style="min-width:180px">Highlights</th>
+            <th style="min-width:220px">Transport & Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Day 1 (29 Oct)</td>
+            <td>เดินทางถึงเซี่ยงไฮ้ / Arrival in Shanghai<br>พัก Jinjiang Inn / Check-in Hotel</td>
+            <td>พักผ่อน, เดินเล่นรอบโรงแรม Jinjiang / Relax nearby hotel</td>
+            <td>BKK ✈ PVG (01:55–06:55)<br>Metro Line 2 → People’s Square → Jinjiang Inn</td>
+          </tr>
+          <tr>
+            <td>Day 2 (30 Oct)</td>
+            <td>เที่ยว Shanghai Disneyland / Visit Shanghai Disneyland</td>
+            <td>ดิสนีย์แลนด์เต็มวัน / Full day at Disneyland</td>
+            <td>Metro Line 2 → Disneyland<br>ใช้เวลา ~1 ชม.</td>
+          </tr>
+          <tr>
+            <td>Day 3 (31 Oct)</td>
+            <td>วัด Jing’an, ถนน Wukang / Jing’an Temple, Wukang Rd Café Street</td>
+            <td>คาเฟ่ Bear Lala, RAC Coffee / Cute café & local vibes</td>
+            <td>Metro Line 2 → Jing’an Temple / Line 10 → Wukang Rd</td>
+          </tr>
+          <tr>
+            <td>Day 4 (1 Nov)</td>
+            <td>People’s Square, Nanjing Rd, Jade Buddha Temple / เดินเล่น ช้อปปิ้ง ไหว้พระ</td>
+            <td>Jade Buddha Temple, ช้อปที่ Nanjing Rd / Spiritual & shopping</td>
+            <td>Metro Line 7 → Changshou Rd → Jade Buddha Temple</td>
+          </tr>
+          <tr>
+            <td>Day 5 (2 Nov)</td>
+            <td>The Bund, Oriental Pearl Tower, ถ่ายรูปกระทิง / Photo day & return flight</td>
+            <td>The Bund, หอไข่มุก, กระทิงทอง / Iconic Shanghai shots</td>
+            <td>Metro Line 2 → Lujiazui → The Bund<br>กลับ PVG เวลา 21:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Card view for mobile -->
+    <div class="cards" id="cards" style="display:none">
+      <!-- Each card matches a row above -->
+      <div class="card">
+        <h3>Day 1 (29 Oct)</h3>
+        <div class="muted">เดินทางถึงเซี่ยงไฮ้ / Arrival in Shanghai</div>
+        <p>พัก Jinjiang Inn / Check-in Hotel</p>
+        <p class="muted">Highlights: พักผ่อน, เดินเล่นรอบโรงแรม Jinjiang</p>
+        <p class="muted">Transport: BKK ✈ PVG (01:55–06:55) · Metro Line 2 → People’s Square → Jinjiang Inn</p>
+      </div>
+
+      <div class="card">
+        <h3>Day 2 (30 Oct)</h3>
+        <div class="muted">เที่ยว Shanghai Disneyland / Visit Shanghai Disneyland</div>
+        <p class="muted">Highlights: ดิสนีย์แลนด์เต็มวัน</p>
+        <p class="muted">Transport: Metro Line 2 → Disneyland · ใช้เวลา ~1 ชม.</p>
+      </div>
+
+      <div class="card">
+        <h3>Day 3 (31 Oct)</h3>
+        <div class="muted">วัด Jing’an, ถนน Wukang / Jing’an Temple, Wukang Rd Café Street</div>
+        <p class="muted">Highlights: คาเฟ่ Bear Lala, RAC Coffee</p>
+        <p class="muted">Transport: Metro Line 2 → Jing’an Temple / Line 10 → Wukang Rd</p>
+      </div>
+
+      <div class="card">
+        <h3>Day 4 (1 Nov)</h3>
+        <div class="muted">People’s Square, Nanjing Rd, Jade Buddha Temple</div>
+        <p class="muted">Highlights: Jade Buddha Temple, ช้อปที่ Nanjing Rd</p>
+        <p class="muted">Transport: Metro Line 7 → Changshou Rd → Jade Buddha Temple</p>
+      </div>
+
+      <div class="card">
+        <h3>Day 5 (2 Nov)</h3>
+        <div class="muted">The Bund, Oriental Pearl Tower, ถ่ายรูปกระทิง</div>
+        <p class="muted">Highlights: The Bund, หอไข่มุก, กระทิงทอง</p>
+        <p class="muted">Transport: Metro Line 2 → Lujiazui → The Bund · กลับ PVG เวลา 21:00</p>
+      </div>
+    </div>
+
+    <p class="note">หมายเหตุ: กด <strong>แสดงเป็นการ์ด</strong> เพื่อดูแบบ mobile-friendly. ปุ่มดาวน์โหลดจะสร้างไฟล์จากข้อมูลในหน้า (ไม่มีการส่งข้อมูลออกไปไหน).</p>
+  </main>
+
+  <script>
+    // Toggle view
+    const btnToggle = document.getElementById('btnToggleView');
+    const tableWrap = document.getElementById('tableWrap');
+    const cards = document.getElementById('cards');
+    let isCard = false;
+    btnToggle.addEventListener('click', ()=>{
+      isCard = !isCard;
+      if(isCard){
+        tableWrap.style.display = 'none';
+        cards.style.display = 'grid';
+        btnToggle.textContent = 'แสดงเป็นตาราง (Desktop)';
+      }else{
+        tableWrap.style.display = '';
+        cards.style.display = 'none';
+        btnToggle.textContent = 'แสดงเป็นการ์ด (มือถือ)';
+      }
+    });
+
+    // Excel (XLSX) export using SheetJS
+    document.getElementById('btnDownloadXLS').addEventListener('click', ()=>{
+      try{
+        const table = document.getElementById('itineraryTable');
+        const wb = XLSX.utils.table_to_book(table, {sheet:"Itinerary"});
+        XLSX.writeFile(wb, 'Shanghai_5Days_Itinerary.xlsx');
+      }catch(err){
+        alert('เกิดข้อผิดพลาดในการสร้าง Excel: '+err.message);
+      }
+    });
+
+    // CSV export fallback
+    document.getElementById('btnDownloadCSV').addEventListener('click', ()=>{
+      try{
+        const table = document.getElementById('itineraryTable');
+        const csv = XLSX.utils.sheet_to_csv( XLSX.utils.table_to_sheet(table) );
+        const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'Shanghai_5Days_Itinerary.csv'; a.click(); URL.revokeObjectURL(url);
+      }catch(err){ alert('Error creating CSV: '+err.message); }
+    });
+
+    // PDF export using jsPDF + autoTable
+    document.getElementById('btnDownloadPDF').addEventListener('click', async ()=>{
+      try{
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+        doc.setFontSize(14);
+        doc.text('Shanghai 5-Day Itinerary (29 Oct – 2 Nov)', 40, 40);
+        doc.autoTable({
+          html: '#itineraryTable',
+          startY: 60,
+          headStyles: {fillColor: [40,131,198]},
+          styles: {fontSize:9,cellPadding:6,overflow:'linebreak'},
+          theme: 'grid',
+          columnStyles: {0:{cellWidth:70},1:{cellWidth:220},2:{cellWidth:180},3:{cellWidth:220}}
+        });
+        doc.save('Shanghai_5Days_Itinerary.pdf');
+      }catch(err){
+        alert('เกิดข้อผิดพลาดในการสร้าง PDF: '+err.message);
+      }
+    });
+
+    // Print
+    document.getElementById('btnPrint').addEventListener('click', ()=>{
+      window.print();
+    });
+
+    // Accessibility: allow opening links with Enter on buttons
+    document.querySelectorAll('button').forEach(b=>b.addEventListener('keyup', e=>{ if(e.key==='Enter') b.click(); }));
+  </script>
+</body>
+</html>
